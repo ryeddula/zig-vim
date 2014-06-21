@@ -123,9 +123,10 @@ if has("gui_running")
     else
     endif
 elseif &t_Co == 256
+    set t_ut= "disable background color erase to avoid bleeding in screen
     colorscheme railscasts
 else
-    colorscheme railscasts
+    colorscheme default
 endif
 
 " Syntastic settings
