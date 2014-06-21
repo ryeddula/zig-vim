@@ -57,10 +57,6 @@ vmap <s-tab> <gv
 nmap <tab> I<tab><esc>
 nmap <s-tab> ^i<bs><esc>
 
-" comment/uncomment blocks of code (in vmode)
-vmap _c :s/^/#/gi<Enter>
-vmap _C :s/^#//gi<Enter>
-
 " my perl includes pod
 let perl_include_pod = 1
 
@@ -104,7 +100,7 @@ let g:tagbar_iconchars = ['+', '-']
 let g:tagbar_width = 25
 let g:tagbar_sort = 0
 " autocmd VimEnter * nested :call tagbar#autoopen(1)
-autocmd FileType perl nested :TagbarOpen
+autocmd FileType c,cpp,java,python,perl nested :TagbarOpen
 " autocmd BufEnter * nested :call tagbar#autoopen(0)
 
 if has("gui_running")
