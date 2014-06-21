@@ -30,3 +30,9 @@
 [submodule "bundle/vim-colorschemes"]
 	path = bundle/vim-colorschemes
 	url = https://github.com/flazz/vim-colorschemes.git
+[submodule "bundle/vim-youcompleteme"]
+	path = bundle/vim-youcompleteme
+	url = https://github.com/Valloric/YouCompleteMe.git
+[submodule "bundle/vim-nerdcommenter"]
+	path = bundle/vim-nerdcommenter
+	url = https://github.com/scrooloose/nerdcommenter.git
