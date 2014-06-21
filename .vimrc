@@ -111,7 +111,7 @@ if has("gui_running")
     set lines=24 " Needed on drpepper.
     set columns=40
     let &guicursor = &guicursor . ",a:blinkon0"
-    colorscheme hybrid
+    colorscheme railscasts
     if has("gui_gtk")
         set guifont=Monospace\ 14
         set lines=43
@@ -127,8 +127,17 @@ if has("gui_running")
     else
     endif
 elseif &t_Co == 256
-    colorscheme hybrid
+    colorscheme railscasts
 else
-    colorscheme hybrid
+    colorscheme railscasts
 endif
 
+" Syntastic settings
+let g:syntastic_check_on_open=1
+let g:syntastic_enable_perl_checker=1 " enable perl checks
+let g:syntastic_auto_loc_list=1  " autoopen the errors window when the buffer has errors.
+let g:syntastic_quiet_messages = {'level': 'warnings'}
+let g:syntastic_enable_highlighting=1
+let g:syntastic_auto_jump=1
+let g:syntastic_loc_list_height=5
+let g:syntastic_perl_checkers=['perl']
