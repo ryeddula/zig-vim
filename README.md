@@ -13,10 +13,12 @@ Special Module information
 
 Tagbar
 ------
-Required excuberant ctags to installed: http://ctags.sourceforge.net/
+Requires excuberant ctags: http://ctags.sourceforge.net/
 
 YouCompleteMe
 -------------
+```bash
 cd ~/.vim/bundle/vim-youcompleteme/
 ./install.sh --clang-completer
+```
 
