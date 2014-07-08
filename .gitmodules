@@ -33,3 +33,6 @@
 [submodule "bundle/vim-neocomplete"]
 	path = bundle/vim-neocomplete
 	url = https://github.com/Shougo/neocomplete.vim.git
+[submodule "bundle/vim-perldoc"]
+	path = bundle/vim-perldoc
+	url = https://github.com/hotchpotch/perldoc-vim.git
