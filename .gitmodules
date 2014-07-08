@@ -1,7 +1,3 @@
-[submodule "supertab"]
-  path = bundle/supertab
-  url  = https://github.com/ervandew/supertab.git
-
 [submodule "syntastic"]
   path = bundle/syntastic
   url  = https://github.com/scrooloose/syntastic.git
@@ -21,6 +17,7 @@
 [submodule "vim-perl"]
   path = bundle/vim-perl
   url = https://github.com/vim-perl/vim-perl.git
+
 [submodule "bundle/sql-syntax-highlighting.vim"]
 	path = bundle/sql-syntax-highlighting.vim
 	url = https://github.com/vim-scripts/sql.vim--Stinson.git
@@ -30,9 +27,9 @@
 [submodule "bundle/vim-colorschemes"]
 	path = bundle/vim-colorschemes
 	url = https://github.com/flazz/vim-colorschemes.git
-[submodule "bundle/vim-youcompleteme"]
-	path = bundle/vim-youcompleteme
-	url = https://github.com/Valloric/YouCompleteMe.git
 [submodule "bundle/vim-nerdcommenter"]
 	path = bundle/vim-nerdcommenter
 	url = https://github.com/scrooloose/nerdcommenter.git
+[submodule "bundle/vim-neocomplete"]
+	path = bundle/vim-neocomplete
+	url = https://github.com/Shougo/neocomplete.vim.git
