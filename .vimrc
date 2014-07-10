@@ -137,32 +137,6 @@ else
     colorscheme default
 endif
 
-" Neocomplete settings
-let g:neocomplete#enable_at_startup = 1 " enable neocomplete on startup
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return neocomplete#close_popup() . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplete#close_popup()
-inoremap <expr><C-e>  neocomplete#cancel_popup()
-" Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
-" let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-
-let g:neocomplete#disable_auto_complete=1 " don't start autocompletion until tab is pressed.
-
 " Syntastic settings
 let g:syntastic_check_on_open=1
 let g:syntastic_enable_perl_checker=1 " enable perl checks
