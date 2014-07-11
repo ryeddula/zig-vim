@@ -33,16 +33,20 @@ syntax on
 nohl
 
 " autoindent
-autocmd FileType perl set autoindent|set smartindent
+set autoindent
+set smartindent
 
 " 4 space tabs
-autocmd FileType perl set tabstop=4|set shiftwidth=4|set expandtab|set softtabstop=4
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set softtabstop=4
 
 " show matching brackets
-autocmd FileType perl set showmatch
+set showmatch
 
 " show line numbers
-autocmd FileType perl set number
+set number
 
 " check perl code with :make
 autocmd FileType perl set makeprg=perl\ -c\ %\ $*
@@ -90,11 +94,6 @@ set foldlevelstart=1
 set foldnestmax=2
 highlight Folded ctermbg=darkblue ctermfg=yellow
 
-" Tab Spacing
-set expandtab
-set tabstop=4
-set shiftwidth=4
-
 " Exception Highlighting
 match ErrorMsg '\s\+$'
 "match Error /\%81v.\+/
@@ -121,8 +120,8 @@ if has("gui_running")
         set lines=43
         augroup set
           au FileType gitcommit    set lines=24
-          au FileType asciidoc    set lines=24
-          au FileType review        set columns=81
+          au FileType asciidoc     set lines=24
+          au FileType review       set columns=80
         augroup end
     elseif has("gui_kde")
     elseif has("gui_x11")
