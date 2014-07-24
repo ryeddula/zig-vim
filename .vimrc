@@ -41,7 +41,6 @@ set incsearch
 
 " syntax highlighting
 set bg=light
-syntax on
 
 " start with nohightlights
 nohl
@@ -159,3 +158,7 @@ let g:syntastic_enable_highlighting=1
 let g:syntastic_auto_jump=1
 let g:syntastic_loc_list_height=5
 let g:syntastic_perl_checkers=['perl']
+
+" Associate *.tt files with template toolkit
+" TODO: figure why this doesn't get auto detected...
+autocmd BufNewFile,BufRead *.tt setf tt2html
