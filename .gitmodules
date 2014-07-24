@@ -33,3 +33,6 @@
 [submodule "bundle/vim-perldoc"]
 	path = bundle/vim-perldoc
 	url = https://github.com/hotchpotch/perldoc-vim.git
+[submodule "bundle/vim-supertab"]
+	path = bundle/vim-supertab
+	url = https://github.com/ervandew/supertab.git
