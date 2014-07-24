@@ -8,16 +8,30 @@ if has("unix")
     endif
 endif
 
-let g:airline_theme = 'murmur'
-
 execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
+" airline settings
+let g:airline_theme = 'murmur'
 let g:airline_powerline_fonts = 1
+" Enable the list of buffers
+let g:airline#extensions#tabline#enabled = 1
+" Show just the filename
+let g:airline#extensions#tabline#fnamemod = ':t'
 
 " Set leader to ',' instead of '\'
 let mapleader=","
+
+" To open a new empty buffer
+nmap <leader>t :enew<cr>
+" Move to the next buffer
+nmap <leader>l :bnext<CR>
+" Move to the previous buffer
+nmap <leader>h :bprevious<CR>
+" Close the current buffer and move to the previous one
+" This replicates the idea of closing a tab
+nmap <leader>bq :bp <BAR> bd #<CR>
 
 " use visual bell instead of beeping
 set vb
