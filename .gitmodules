@@ -39,3 +39,6 @@
 [submodule "bundle/vim-perlomni"]
 	path = bundle/vim-perlomni
 	url = https://github.com/c9s/perlomni.vim.git
+[submodule "bundle/vim-fastfold"]
+	path = bundle/vim-fastfold
+	url = https://github.com/Konfekt/FastFold.git
