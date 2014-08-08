@@ -162,3 +162,9 @@ let g:syntastic_perl_checkers=['perl']
 " Associate *.tt files with template toolkit
 " TODO: figure why this doesn't get auto detected...
 autocmd BufNewFile,BufRead *.tt setf tt2html
+
+" Turn on spellcheck when writing git commit messages, cause #spalleing
+autocmd FileType gitcommit set spell spelllang=en_us
+
+" For local replace
+nnoremap gr gd[{V%::s/<C-R>///gc<left><left><left>
