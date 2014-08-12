@@ -36,8 +36,12 @@ nmap <leader>bq :bp <BAR> bd #<CR>
 " use visual bell instead of beeping
 set vb
 
-" incremental search
+" search
+set ignorecase
+set smartcase
 set incsearch
+set hlsearch
+set gdefault
 
 " syntax highlighting
 set bg=light
@@ -111,6 +115,16 @@ highlight Folded ctermbg=darkblue ctermfg=yellow
 match ErrorMsg '\s\+$'
 "match Error /\%81v.\+/
 
+" cursor position
+set cursorline
+set scrolloff=4
+set sidescroll=1
+set sidescrolloff=15
+
+" better wrapping
+set wrap linebreak
+set showbreak=" "
+
 " Tagbar
 nmap <F8> :TagbarOpen fj<CR>
 nmap <F9> :TagbarToggle<CR>
@@ -119,6 +133,11 @@ let g:tagbar_show_linenumbers = 0 " Show absolute line numbers
 let g:tagbar_iconchars = ['+', '-']
 let g:tagbar_width = 25
 let g:tagbar_sort = 0
+" This fixes error such as:
+"   E432: Tags file not sorted: /usr/share/vim/vim74/doc/tags
+"   E432: Tags file not sorted: /usr/share/vim/vim74/doc/tags
+"   E426: tag not found: executable()@en
+set notagbsearch
 " autocmd VimEnter * nested :call tagbar#autoopen(1)
 autocmd FileType c,cpp,java,python,perl nested :TagbarOpen
 " autocmd BufEnter * nested :call tagbar#autoopen(0)
@@ -150,21 +169,44 @@ else
 endif
 
 " Syntastic settings
-let g:syntastic_check_on_open=1
-let g:syntastic_enable_perl_checker=1 " enable perl checks
-let g:syntastic_auto_loc_list=1  " autoopen the errors window when the buffer has errors.
-let g:syntastic_quiet_messages = {'level': 'warnings'}
-let g:syntastic_enable_highlighting=1
-let g:syntastic_auto_jump=1
-let g:syntastic_loc_list_height=5
-let g:syntastic_perl_checkers=['perl']
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_enable_perl_checker = 1 " enable perl checks
+let g:syntastic_auto_loc_list = 1  " autoopen the errors window when the buffer has errors.
+" TODO: it appears that jshint shows stuff as warnings... so need to
+" conditionally suppress warnings only perl files for now.
+"let g:syntastic_quiet_messages = {'level': 'warnings'}
+let g:syntastic_enable_highlighting = 1
+let g:syntastic_auto_jump = 1
+let g:syntastic_loc_list_height = 5
+let g:syntastic_perl_checkers = ['perl']
+" TODO: Should probably just add this to my path instead...
+if executable('/usr/local/cpanel/3rdparty/node/bin/jshint')
+    let g:syntastic_javascript_checkers = ['jshint']
+    let g:syntastic_javascript_jshint_exec = '/usr/local/cpanel/3rdparty/node/bin/jshint'
+    let g:syntastic_javascript_jshint_args = "--verbose --config ~/.jshintrc"
+endif
+if has("unix")
+    let g:syntastic_error_symbol = '✗✗'
+    let g:syntastic_style_error_symbol = '✠✠'
+    let g:syntastic_warning_symbol = '∆∆'
+    let g:syntastic_style_warning_symbol = '≈≈'
+else
+    let g:syntastic_error_symbol = 'X'
+    let g:syntastic_style_error_symbol = '>'
+    let g:syntastic_warning_symbol = '!'
+    let g:syntastic_style_warning_symbol = '>'
+endif
+
 
 " Associate *.tt files with template toolkit
 " TODO: figure why this doesn't get auto detected...
 autocmd BufNewFile,BufRead *.tt setf tt2html
 
 " Turn on spellcheck when writing git commit messages, cause #spalleing
-autocmd FileType gitcommit set spell spelllang=en_us
+if has("spell")
+    autocmd FileType gitcommit set spell spelllang=en_us
+endif
 
 " For local replace
 nnoremap gr gd[{V%::s/<C-R>///gc<left><left><left>
