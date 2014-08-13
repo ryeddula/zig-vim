@@ -17,6 +17,9 @@ let g:airline_theme = 'murmur'
 let g:airline_powerline_fonts = 1
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
+" Ensures that the buffer of the old file will only be hidden when you switch to the new file,
+" so that when you switch back, you still have your undo history.
+set hidden
 " Show just the filename
 let g:airline#extensions#tabline#fnamemod = ':t'
 
@@ -197,6 +200,9 @@ else
     let g:syntastic_warning_symbol = '!'
     let g:syntastic_style_warning_symbol = '>'
 endif
+" map the quit calls to also close the syntastic error windows, so it doesn't
+" hold us up unnecessarily
+cabbrev q lcl\|q
 
 
 " Associate *.tt files with template toolkit
