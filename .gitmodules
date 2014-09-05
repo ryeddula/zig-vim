@@ -42,3 +42,6 @@
 [submodule "bundle/vim-fastfold"]
 	path = bundle/vim-fastfold
 	url = https://github.com/Konfekt/FastFold.git
+[submodule "bundle/vim-tomorrow-theme"]
+	path = bundle/vim-tomorrow-theme
+	url = https://github.com/chriskempson/vim-tomorrow-theme.git
