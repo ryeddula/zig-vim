@@ -150,7 +150,7 @@ if has("gui_running")
     set lines=24 " Needed on drpepper.
     set columns=40
     let &guicursor = &guicursor . ",a:blinkon0"
-    colorscheme railscasts
+    colorscheme twitchy
     if has("gui_gtk")
         set guifont=Monospace\ 14
         set lines=43
@@ -167,7 +167,7 @@ if has("gui_running")
     endif
 elseif &t_Co == 256
     set t_ut= "disable background color erase to avoid bleeding in screen
-    colorscheme railscasts
+    colorscheme twitchy
 else
     colorscheme default
 endif
