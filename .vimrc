@@ -85,9 +85,10 @@ nmap <tab> I<tab><esc>
 nmap <s-tab> ^i<bs><esc>
 
 " Tidy selected lines (or entire file) with _t:
-nnoremap <silent> _t :%!perltidy -q<Enter>
-vnoremap <silent> _t :!perltidy -q<Enter>
-
+autocmd FileType perl nnoremap <silent> _t :%!perltidy -q<Enter>
+autocmd FileType perl vnoremap <silent> _t :!perltidy -q<Enter>
+autocmd FileType javascript nnoremap <silent> _t :%!uglifyjs -b<Enter>
+autocmd FileType javascript vnoremap <silent> _t :!uglifyjs -b<Enter>
 
 " Deparse obfuscated code
 nnoremap <silent> _d :.!perl -MO=Deparse 2>/dev/null<cr>
