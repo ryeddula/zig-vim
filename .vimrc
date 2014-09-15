@@ -210,6 +210,7 @@ cabbrev q lcl\|q
 " Associate *.tt files with template toolkit
 " TODO: figure why this doesn't get auto detected...
 autocmd BufNewFile,BufRead *.tt setf tt2html
+autocmd BufNewFile,BufRead *.tmpl set filetype=tt2html
 
 " Turn on spellcheck when writing git commit messages, cause #spalleing
 if has("spell")
