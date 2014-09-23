@@ -85,10 +85,28 @@ nmap <tab> I<tab><esc>
 nmap <s-tab> ^i<bs><esc>
 
 " Tidy selected lines (or entire file) with _t:
-autocmd FileType perl nnoremap <silent> _t :%!perltidy -q<Enter>
-autocmd FileType perl vnoremap <silent> _t :!perltidy -q<Enter>
-autocmd FileType javascript nnoremap <silent> _t :%!uglifyjs -b<Enter>
-autocmd FileType javascript vnoremap <silent> _t :!uglifyjs -b<Enter>
+vnoremap <silent> _t :call <SID>DoTidy(1)<CR>
+nnoremap <silent> _t :call <SID>DoTidy(0)<CR>
+
+function! s:DoTidy(visual) range
+    let cmd = "cat"
+    let winview = winsaveview()
+    if &ft == "perl"
+        let cmd = "perltidy -q"
+    elseif &ft == "python"
+        let cmd = "pythontidy"
+    elseif &ft == "javascript"
+        let cmd = "uglifyjs -b"
+    endif
+    if a:visual == 0
+        let text = ":%!" . cmd
+        execute text
+    elseif a:visual == 1
+        let text = ":'<,'>!" . cmd
+        execute text
+    end
+    call winrestview(winview)
+endfunction
 
 " Deparse obfuscated code
 nnoremap <silent> _d :.!perl -MO=Deparse 2>/dev/null<cr>
@@ -185,6 +203,8 @@ let g:syntastic_enable_highlighting = 1
 let g:syntastic_auto_jump = 1
 let g:syntastic_loc_list_height = 5
 let g:syntastic_perl_checkers = ['perl']
+let g:syntastic_perl_lib_path = ['./lib']
+
 " TODO: Should probably just add this to my path instead...
 if executable('/usr/local/cpanel/3rdparty/node/bin/jshint')
     let g:syntastic_javascript_checkers = ['jshint']
