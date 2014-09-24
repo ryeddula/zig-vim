@@ -96,7 +96,8 @@ function! s:DoTidy(visual) range
     elseif &ft == "python"
         let cmd = "pythontidy"
     elseif &ft == "javascript"
-        let cmd = "uglifyjs -b"
+        " Currently doesn't do long line breaks properly :/
+        let cmd = "uglifyjs -b --comments all"
     endif
     if a:visual == 0
         let text = ":%!" . cmd
