@@ -72,6 +72,7 @@ set number
 autocmd FileType perl set makeprg=perl\ -c\ %\ $*
 autocmd FileType perl set errorformat=%f:%l:%m
 autocmd FileType perl set autowrite
+autocmd FileType perl syntax sync minlines=300
 
 " dont use Q for Ex mode
 map Q :q
@@ -199,7 +200,7 @@ let g:syntastic_enable_perl_checker = 1 " enable perl checks
 let g:syntastic_auto_loc_list = 1  " autoopen the errors window when the buffer has errors.
 " TODO: it appears that jshint shows stuff as warnings... so need to
 " conditionally suppress warnings only perl files for now.
-"let g:syntastic_quiet_messages = {'level': 'warnings'}
+autocmd FileType perl let g:syntastic_quiet_messages = {'level': 'warnings'}
 let g:syntastic_enable_highlighting = 1
 let g:syntastic_auto_jump = 1
 let g:syntastic_loc_list_height = 5
@@ -231,7 +232,7 @@ cabbrev q lcl\|q
 " Associate *.tt files with template toolkit
 " TODO: figure why this doesn't get auto detected...
 autocmd BufNewFile,BufRead *.tt setf tt2html
-autocmd BufNewFile,BufRead *.tmpl set filetype=tt2html
+autocmd BufNewFile,BufRead *.tmpl,*.ptt set filetype=tt2html
 
 " Turn on spellcheck when writing git commit messages, cause #spalleing
 if has("spell")
