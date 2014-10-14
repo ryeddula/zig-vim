@@ -163,30 +163,9 @@ let g:tagbar_sort = 0
 "   E432: Tags file not sorted: /usr/share/vim/vim74/doc/tags
 "   E426: tag not found: executable()@en
 set notagbsearch
-" autocmd VimEnter * nested :call tagbar#autoopen(1)
 autocmd FileType c,cpp,java,python,perl nested :TagbarOpen
-" autocmd BufEnter * nested :call tagbar#autoopen(0)
 
-if has("gui_running")
-    set lines=24 " Needed on drpepper.
-    set columns=40
-    let &guicursor = &guicursor . ",a:blinkon0"
-    colorscheme railscasts
-    if has("gui_gtk")
-        set guifont=Monospace\ 14
-        set lines=43
-        augroup set
-          au FileType gitcommit    set lines=24
-          au FileType asciidoc     set lines=24
-          au FileType review       set columns=80
-        augroup end
-    elseif has("gui_kde")
-    elseif has("gui_x11")
-    elseif has("gui_macvim")
-        set guifont=Monaco\ 10
-    else
-    endif
-elseif &t_Co == 256
+if &t_Co == 256
     set t_ut= "disable background color erase to avoid bleeding in screen
     colorscheme railscasts
 else
