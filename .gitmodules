@@ -26,7 +26,7 @@
 	url = https://github.com/majutsushi/tagbar.git
 [submodule "bundle/vim-colorschemes"]
 	path = bundle/vim-colorschemes
-	url = https://github.com/flazz/vim-colorschemes.git
+	url = https://github.com/ryeddula/vim-colorschemes.git
 [submodule "bundle/vim-nerdcommenter"]
 	path = bundle/vim-nerdcommenter
 	url = https://github.com/scrooloose/nerdcommenter.git
