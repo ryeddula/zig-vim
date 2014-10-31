@@ -180,6 +180,7 @@ let g:syntastic_auto_loc_list = 1  " autoopen the errors window when the buffer 
 " TODO: it appears that jshint shows stuff as warnings... so need to
 " conditionally suppress warnings only perl files for now.
 autocmd FileType perl let g:syntastic_quiet_messages = {'level': 'warnings'}
+autocmd FileType html let g:syntastic_html_tidy_ignore_errors = [ "<cptext> unexpected or duplicate quote mark", "discarding unexpected <cpanel>", "discarding unexpected <cptext>", "<cptext> is not recognized!",  "<cpanel> is not recognized!", "<cptext> attribute with missing trailing quote mark" ]
 let g:syntastic_enable_highlighting = 1
 let g:syntastic_auto_jump = 1
 let g:syntastic_loc_list_height = 5
@@ -218,5 +219,13 @@ if has("spell")
     autocmd FileType gitcommit set spell spelllang=en_us
 endif
 
-" For local replace
-nnoremap gr gd[{V%::s/<C-R>///gc<left><left><left>
+function! Refactor()
+    call inputsave()
+    let @z=input("What do you want to rename '" . @z . "' to? ")
+    call inputrestore()
+endfunction
+ 
+" Locally (local to block) rename a variable
+nmap gr "zyiw:call Refactor()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z/g<cr>`x
+
+
