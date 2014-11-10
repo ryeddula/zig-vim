@@ -219,13 +219,14 @@ if has("spell")
     autocmd FileType gitcommit set spell spelllang=en_us
 endif
 
+" Locally (local to block) rename a variable
 function! Refactor()
     call inputsave()
     let @z=input("What do you want to rename '" . @z . "' to? ")
     call inputrestore()
 endfunction
- 
-" Locally (local to block) rename a variable
+
 nmap gr "zyiw:call Refactor()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z/g<cr>`x
 
-
+" UltiSnips
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "bundle/cpanel-snippets"]

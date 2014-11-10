@@ -22,3 +22,11 @@ cd ~/.vim/bundle/vim-youcompleteme/
 ./install.sh --clang-completer
 ```
 
+cPanel Snippets
+---------------
+* Clone the vim snippets repo to a location outside of the repo.
+* Create a symlink to that location in the 'bundle' directory:
+```
+cd bundle
+ln -s /path/to/cpanel-vim-snippets/ ./
+```
