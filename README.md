@@ -28,5 +28,5 @@ cPanel Snippets
 * Create a symlink to that location in the 'bundle' directory:
 ```
 cd bundle
-ln -s /path/to/cpanel-vim-snippets/ ./
+ln -s /path/to/cpanel-vim-snippets/ ./cpanel-snippets
 ```
