@@ -97,8 +97,7 @@ function! s:DoTidy(visual) range
     elseif &ft == "python"
         let cmd = "pythontidy"
     elseif &ft == "javascript"
-        " Currently doesn't do long line breaks properly :/
-        let cmd = "uglifyjs -b --comments all"
+        let cmd = "/usr/local/cpanel/3rdparty/node/bin/js-beautify --config=~/.jsbeautifyrc --file -"
     endif
     if a:visual == 0
         let text = ":%!" . cmd
@@ -167,7 +166,7 @@ autocmd FileType c,cpp,java,python,perl nested :TagbarOpen
 
 if &t_Co == 256
     set t_ut= "disable background color erase to avoid bleeding in screen
-    colorscheme railscasts_256
+    colorscheme hybrid
 else
     colorscheme default
 endif
@@ -184,7 +183,7 @@ autocmd FileType html let g:syntastic_html_tidy_ignore_errors = [ "<cptext> unex
 let g:syntastic_enable_highlighting = 1
 let g:syntastic_auto_jump = 1
 let g:syntastic_loc_list_height = 5
-let g:syntastic_perl_checkers = ['perl']
+let g:syntastic_perl_checkers = ['perl', 'perlcritic']
 let g:syntastic_perl_lib_path = ['./lib']
 
 " TODO: Should probably just add this to my path instead...
