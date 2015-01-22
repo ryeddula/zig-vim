@@ -229,3 +229,12 @@ nmap gr "zyiw:call Refactor()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z/g<cr
 
 " UltiSnips
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "bundle/cpanel-snippets"]
+
+let g:ctrlp_cmd = 'CtrlP'
+nmap <leader>p :CtrlP<CR>
+let g:ctrlp_working_path_mode = 'ra'
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ }
