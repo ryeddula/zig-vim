@@ -97,7 +97,11 @@ function! s:DoTidy(visual) range
     elseif &ft == "python"
         let cmd = "pythontidy"
     elseif &ft == "javascript"
-        let cmd = "/usr/local/cpanel/3rdparty/node/bin/js-beautify --config=~/.jsbeautifyrc --file -"
+        if executable('/usr/local/cpanel/3rdparty/node/bin/jsfmt')
+            let cmd = "/usr/local/cpanel/3rdparty/node/bin/jsfmt"
+        else
+            let cmd = "/usr/local/cpanel/3rdparty/node/bin/js-beautify --config=~/.jsbeautifyrc --file -"
+        endif
     endif
     if a:visual == 0
         let text = ":%!" . cmd
@@ -117,15 +121,15 @@ vnoremap <silent> _d :!perl -MO=Deparse 2>/dev/null<cr>
 let perl_include_pod=1
 let perl_fold=1
 let perl_nofold_subs=1
+let perl_want_scope_in_variables=1
+" syntax color complex things like @{${"foo"}}
+let perl_extended_vars=1
 
 " In normal mode, press Space to toggle the current fold open/closed.
 " However, if the cursor is not in a fold, move to the right (the default
 " behavior)
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <Space> zf
-
-" syntax color complex things like @{${"foo"}}
-let perl_extended_vars=1
 
 " Folding
 set foldmethod=syntax
