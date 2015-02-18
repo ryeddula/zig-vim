@@ -145,7 +145,7 @@ match ErrorMsg '\s\+$'
 " cursor position
 set cursorline
 set cursorcolumn
-set scrolloff=4
+set scrolloff=10
 set sidescroll=1
 set sidescrolloff=15
 
@@ -215,8 +215,8 @@ cabbrev q lcl\|q
 
 " Associate *.tt files with template toolkit
 " TODO: figure why this doesn't get auto detected...
-autocmd BufNewFile,BufRead *.tt setf tt2html
-autocmd BufNewFile,BufRead *.tmpl,*.ptt set filetype=tt2html
+autocmd BufNewFile,BufRead *.tt setf tt2html | :TagbarClose
+autocmd BufNewFile,BufRead *.tmpl,*.ptt set filetype=tt2html | :TagbarClose
 
 " Turn on spellcheck when writing git commit messages, cause #spalleing
 if has("spell")
