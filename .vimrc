@@ -170,7 +170,8 @@ autocmd FileType c,cpp,java,python,perl nested :TagbarOpen
 
 if &t_Co == 256
     set t_ut= "disable background color erase to avoid bleeding in screen
-    colorscheme ct_grey
+    let g:molokai_original = 1
+    colorscheme molokai
 else
     colorscheme default
 endif
