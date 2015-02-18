@@ -170,8 +170,11 @@ autocmd FileType c,cpp,java,python,perl nested :TagbarOpen
 
 if &t_Co == 256
     set t_ut= "disable background color erase to avoid bleeding in screen
-    let g:molokai_original = 1
-    colorscheme molokai
+    " Requires you to be running a base16-shell:
+    " https://github.com/chriskempson/base16-shell
+    set background=dark
+    let base16colorspace=256  " Access colors present in 256 colorspace
+    colorscheme base16-monokai
 else
     colorscheme default
 endif
