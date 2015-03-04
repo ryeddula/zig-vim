@@ -174,7 +174,7 @@ if &t_Co == 256
     " https://github.com/chriskempson/base16-shell
     set background=dark
     let base16colorspace=256  " Access colors present in 256 colorspace
-    colorscheme base16-monokai
+    colorscheme base16-bright
 else
     colorscheme default
 endif
