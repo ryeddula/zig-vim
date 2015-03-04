@@ -193,6 +193,7 @@ let g:syntastic_auto_jump = 1
 let g:syntastic_loc_list_height = 5
 let g:syntastic_perl_checkers = ['perl', 'perlcritic']
 let g:syntastic_perl_lib_path = ['./lib']
+let g:syntastic_perl_perlcritic_args = '--profile ~/.perlcriticrc --stern --theme legacy'
 
 " TODO: Should probably just add this to my path instead...
 if executable('/usr/local/cpanel/3rdparty/node/bin/jshint')
