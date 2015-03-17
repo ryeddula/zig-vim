@@ -8,84 +8,143 @@ if has("unix")
     endif
 endif
 
+if has('multi_byte')      " Make sure we have unicode support
+   scriptencoding utf-8    " This file is in UTF-8
+
+   " ---- Terminal Setup ----
+   if (&termencoding == "" && (&term =~ "xterm" || &term =~ "putty")) || (&term =~ "rxvt-unicode") || (&term =~ "screen") || (&term =~ "toaru")
+      set termencoding=utf-8
+   endif
+   if ($COLORTERM =~ "putty")
+      set termencoding=latin
+   endif
+   set encoding=utf-8      " Default encoding should always be UTF-8
+endif
+
 execute pathogen#infect()
-syntax on
+syntax enable
 filetype plugin indent on
 
-" airline settings
-let g:airline_theme = 'murmur'
-let g:airline_powerline_fonts = 1
-" Enable the list of buffers
-let g:airline#extensions#tabline#enabled = 1
-" Ensures that the buffer of the old file will only be hidden when you switch to the new file,
-" so that when you switch back, you still have your undo history.
-set hidden
-" Show just the filename
-let g:airline#extensions#tabline#fnamemod = ':t'
+" --------------------------------------------
+" Basic vim settings
+" --------------------------------------------
 
-" Set leader to ',' instead of '\'
-let mapleader=","
+let mapleader="," " Set leader to ',' instead of '\'
+nmap <leader>t :enew<CR> "To open a new empty buffer
+nmap <leader>l :bnext<CR> " Move to the next buffer
+nmap <leader>h :bprevious<CR> " Move to the previous buffer
+nmap <leader>bq :bp <BAR> bd #<CR> " Close the current buffer and move to the previous one. This replicates the idea of closing a tab
 
-" To open a new empty buffer
-nmap <leader>t :enew<cr>
-" Move to the next buffer
-nmap <leader>l :bnext<CR>
-" Move to the previous buffer
-nmap <leader>h :bprevious<CR>
-" Close the current buffer and move to the previous one
-" This replicates the idea of closing a tab
-nmap <leader>bq :bp <BAR> bd #<CR>
+set incsearch              " Enable incremental searching
+set hlsearch               " Highlight search matches
+set ignorecase             " Ignore case when searching...
+set smartcase              " ...except when we don't want it
+set infercase              " Attempt to figure out the correct case<F37>
 
-" use visual bell instead of beeping
-set vb
+set lazyredraw             " Lazy Redraw (faster macro execution)
+set wildmenu               " Menu on completion please
+set wildmode=longest,full  " Match the longest substring, complete with first
+set wildignore+=*.o,*~,*/tmp/*,*.so,*.swp,*.zip " Ignore temp files in wildmenu
 
-" search
-set ignorecase
-set smartcase
-set incsearch
-set hlsearch
-set gdefault
-
-" syntax highlighting
-set bg=light
+set noerrorbells           " Disable error bells
+set visualbell             " Turn visual bell on
+set t_vb=                  " Make the visual bell emit nothing
+set showcmd                " Show the current command
 
 " start with nohightlights
 nohl
 
-" autoindent
-set autoindent
-set smartindent
+set tabstop=4              " 4 spaces for tabs
+set shiftwidth=4           " 4 spaces for indents
+set smarttab               " Tab next line based on current line
+set expandtab             " Spaces for indentation
+set autoindent             " Automatically indent next line
+if has('smartindent')
+   set smartindent            " Indent next line based on current line
+endif
 
-" 4 space tabs
-set tabstop=4
-set shiftwidth=4
-set expandtab
-set softtabstop=4
+set showmatch " show matching brackets
+set number " show line numbers
 
-" show matching brackets
-set showmatch
+set cursorline
+set cursorcolumn
+set scrolloff=10
+set sidescroll=1
+set sidescrolloff=15
 
-" show line numbers
-set number
+" better wrapping
+set wrap linebreak
+set showbreak=" "
 
-" check perl code with :make
-autocmd FileType perl set makeprg=perl\ -c\ %\ $*
-autocmd FileType perl set errorformat=%f:%l:%m
-autocmd FileType perl set autowrite
-autocmd FileType perl syntax sync minlines=300
+if &t_Co == 256
+    set t_ut= "disable background color erase to avoid bleeding in screen
+    " Requires you to be running a base16-shell:
+    " https://github.com/chriskempson/base16-shell
+    set background=dark
+    "let base16colorspace=256  " Access colors present in 256 colorspace
+    colorscheme sexy-railscasts-256
+else
+    colorscheme default
+endif
+
+" Perl Specific
+let perl_include_pod=1
+let perl_fold=1
+let perl_nofold_subs=1
+let perl_want_scope_in_variables=1
+" syntax color complex things like @{${"foo"}}
+let perl_extended_vars=1
+
+" In normal mode, press Space to toggle the current fold open/closed.
+" However, if the cursor is not in a fold, move to the right (the default
+" behavior)
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+vnoremap <Space> zf
+
+" Show trailing whitespace visually
+" Shamelessly stolen from Ciaran McCreesh <ciaranm@gentoo.org>
+if (&termencoding == "utf-8") || has("gui_running")
+   if v:version >= 700
+      set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
+   else
+      set list listchars=tab:»·,trail:·,extends:…
+   endif
+else
+   if v:version >= 700
+      set list listchars=tab:>-,trail:.,extends:>,nbsp:_
+   else
+      set list listchars=tab:>-,trail:.,extends:>
+   endif
+endif
 
 " dont use Q for Ex mode
 map Q :q
 
-" make tab in v mode ident code
-vmap <tab> >gv
-vmap <s-tab> <gv
+vmap <silent> <Tab> >gv " tab indents selection
+vmap <silent> <S-Tab> <gv " shift-tab unindents
 
 " make tab in normal mode ident code
 nmap <tab> I<tab><esc>
 nmap <s-tab> ^i<bs><esc>
 
+" Turn on spellcheck when writing git commit messages, cause #spalleing
+if has("spell")
+    autocmd FileType gitcommit set spell spelllang=en_us
+endif
+
+" Locally (local to block) rename a variable
+function! Refactor()
+    call inputsave()
+    let @z=input("What do you want to rename '" . @z . "' to? ")
+    call inputrestore()
+endfunction
+
+nmap gr "zyiw:call Refactor()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z/g<cr>`x
+
+" --------------------------------------------
+" TIDY/FORMAT CODE.
 " Tidy selected lines (or entire file) with _t:
+" --------------------------------------------
 vnoremap <silent> _t :call <SID>DoTidy(1)<CR>
 nnoremap <silent> _t :call <SID>DoTidy(0)<CR>
 
@@ -113,45 +172,28 @@ function! s:DoTidy(visual) range
     call winrestview(winview)
 endfunction
 
-" Deparse obfuscated code
-nnoremap <silent> _d :.!perl -MO=Deparse 2>/dev/null<cr>
-vnoremap <silent> _d :!perl -MO=Deparse 2>/dev/null<cr>
 
-" Perl Specific
-let perl_include_pod=1
-let perl_fold=1
-let perl_nofold_subs=1
-let perl_want_scope_in_variables=1
-" syntax color complex things like @{${"foo"}}
-let perl_extended_vars=1
-
-" In normal mode, press Space to toggle the current fold open/closed.
-" However, if the cursor is not in a fold, move to the right (the default
-" behavior)
-nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
-vnoremap <Space> zf
-
-" Folding
+"" Folding
 set foldmethod=syntax
 set foldlevel=3
 set foldlevelstart=1
 set foldnestmax=2
 highlight Folded ctermbg=darkblue ctermfg=yellow
 
-" Exception Highlighting
-match ErrorMsg '\s\+$'
-"match Error /\%81v.\+/
+" --------------------------------------------
+" Plugin settings.
+" --------------------------------------------
 
-" cursor position
-set cursorline
-set cursorcolumn
-set scrolloff=10
-set sidescroll=1
-set sidescrolloff=15
-
-" better wrapping
-set wrap linebreak
-set showbreak=" "
+" airline settings
+let g:airline_theme = 'murmur'
+let g:airline_powerline_fonts = 1
+" Enable the list of buffers
+let g:airline#extensions#tabline#enabled = 1
+" Ensures that the buffer of the old file will only be hidden when you switch to the new file,
+" so that when you switch back, you still have your undo history.
+set hidden
+" Show just the filename
+let g:airline#extensions#tabline#fnamemod = ':t'
 
 " Tagbar
 nmap <F8> :TagbarOpen fj<CR>
@@ -167,17 +209,6 @@ let g:tagbar_sort = 0
 "   E426: tag not found: executable()@en
 set notagbsearch
 autocmd FileType c,cpp,java,python,perl nested :TagbarOpen
-
-if &t_Co == 256
-    set t_ut= "disable background color erase to avoid bleeding in screen
-    " Requires you to be running a base16-shell:
-    " https://github.com/chriskempson/base16-shell
-    set background=dark
-    let base16colorspace=256  " Access colors present in 256 colorspace
-    colorscheme base16-bright
-else
-    colorscheme default
-endif
 
 " Syntastic settings
 let g:syntastic_check_on_open = 1
@@ -195,7 +226,6 @@ let g:syntastic_perl_checkers = ['perl', 'perlcritic']
 let g:syntastic_perl_lib_path = ['./lib']
 let g:syntastic_perl_perlcritic_args = '--profile ~/.perlcriticrc --stern --theme legacy'
 let g:syntastic_perl_perl_args = '-Mstrict'
-
 " TODO: Should probably just add this to my path instead...
 if executable('/usr/local/cpanel/3rdparty/node/bin/jshint')
     let g:syntastic_javascript_checkers = ['jshint']
@@ -217,25 +247,10 @@ endif
 " hold us up unnecessarily
 cabbrev q lcl\|q
 
-
 " Associate *.tt files with template toolkit
 " TODO: figure why this doesn't get auto detected...
 autocmd BufNewFile,BufRead *.tt setf tt2html | :TagbarClose
 autocmd BufNewFile,BufRead *.tmpl,*.ptt set filetype=tt2html | :TagbarClose
-
-" Turn on spellcheck when writing git commit messages, cause #spalleing
-if has("spell")
-    autocmd FileType gitcommit set spell spelllang=en_us
-endif
-
-" Locally (local to block) rename a variable
-function! Refactor()
-    call inputsave()
-    let @z=input("What do you want to rename '" . @z . "' to? ")
-    call inputrestore()
-endfunction
-
-nmap gr "zyiw:call Refactor()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z/g<cr>`x
 
 " UltiSnips
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "bundle/cpanel-snippets"]
@@ -243,8 +258,10 @@ let g:UltiSnipsSnippetDirectories=["UltiSnips", "bundle/cpanel-snippets"]
 let g:ctrlp_cmd = 'CtrlP'
 nmap <leader>p :CtrlP<CR>
 let g:ctrlp_working_path_mode = 'ra'
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn)$',
   \ 'file': '\v\.(exe|so|dll)$',
   \ }
+
+" Lastly overwrite a few settings to maintain uniformity across colorschemes.
+hi Search ctermfg=Red ctermbg=NONE cterm=bold,underline
