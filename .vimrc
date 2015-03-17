@@ -12,7 +12,7 @@ if has('multi_byte')      " Make sure we have unicode support
    scriptencoding utf-8    " This file is in UTF-8
 
    " ---- Terminal Setup ----
-   if (&termencoding == "" && (&term =~ "xterm" || &term =~ "putty")) || (&term =~ "rxvt-unicode") || (&term =~ "screen") || (&term =~ "toaru")
+   if (&termencoding == "" && (&term =~ "xterm" || &term =~ "putty")) || (&term =~ "rxvt-unicode") || (&term =~ "screen") || (&term =~ "toaru") || (&term =~ "nvim")
       set termencoding=utf-8
    endif
    if ($COLORTERM =~ "putty")
@@ -30,10 +30,14 @@ filetype plugin indent on
 " --------------------------------------------
 
 let mapleader="," " Set leader to ',' instead of '\'
-nmap <leader>t :enew<CR> "To open a new empty buffer
-nmap <leader>l :bnext<CR> " Move to the next buffer
-nmap <leader>h :bprevious<CR> " Move to the previous buffer
-nmap <leader>bq :bp <BAR> bd #<CR> " Close the current buffer and move to the previous one. This replicates the idea of closing a tab
+"To open a new empty buffer
+nmap <leader>t :enew<CR>
+" Move to the next buffer
+nmap <leader>l :bnext<CR>
+" Move to the previous buffer
+nmap <leader>h :bprevious<CR>
+" Close the current buffer and move to the previous one. This replicates the idea of closing a tab
+nmap <leader>bq :bp <BAR> bd #<CR>
 
 set incsearch              " Enable incremental searching
 set hlsearch               " Highlight search matches
@@ -105,9 +109,9 @@ vnoremap <Space> zf
 " Shamelessly stolen from Ciaran McCreesh <ciaranm@gentoo.org>
 if (&termencoding == "utf-8") || has("gui_running")
    if v:version >= 700
-      set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
+      set list listchars=tab:»·,trail:✗,extends:…,nbsp:‗
    else
-      set list listchars=tab:»·,trail:·,extends:…
+      set list listchars=tab:»·,trail:✗,extends:…
    endif
 else
    if v:version >= 700
@@ -171,7 +175,6 @@ function! s:DoTidy(visual) range
     end
     call winrestview(winview)
 endfunction
-
 
 "" Folding
 set foldmethod=syntax
@@ -262,6 +265,3 @@ let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn)$',
   \ 'file': '\v\.(exe|so|dll)$',
   \ }
-
-" Lastly overwrite a few settings to maintain uniformity across colorschemes.
-hi Search ctermfg=Red ctermbg=NONE cterm=bold,underline
