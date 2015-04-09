@@ -55,6 +55,11 @@ set visualbell             " Turn visual bell on
 set t_vb=                  " Make the visual bell emit nothing
 set showcmd                " Show the current command
 
+" Never really use these, so disable them.
+" use screen/tmux in order to avoid 'terminal' disconnects
+set nobackup
+set noswapfile
+
 " start with nohightlights
 nohl
 
@@ -82,11 +87,13 @@ set showbreak=" "
 
 if &t_Co == 256
     set t_ut= "disable background color erase to avoid bleeding in screen
-    " Requires you to be running a base16-shell:
-    " https://github.com/chriskempson/base16-shell
-    set background=dark
+
+    " NOTE: 'base16-*' colorschemes usually require
+    " you to be running a base16-shell: https://github.com/chriskempson/base16-shell
+    " And some of them require this variable to be set:
     "let base16colorspace=256  " Access colors present in 256 colorspace
-    colorscheme sexy-railscasts-256
+    set background=dark
+    colorscheme spacegray
 else
     colorscheme default
 endif
