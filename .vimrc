@@ -1,11 +1,8 @@
 " Set ctags path
-if has("unix")
-    let s:uname = system("uname")
-    if s:uname == "Darwin\n"
-        let g:tagbar_ctags_bin = "/usr/local/bin/ctags"
-    else
-        let g:tagbar_ctags_bin = "/usr/bin/ctags"
-    endif
+if has("mac")
+    let g:tagbar_ctags_bin = "/usr/local/bin/ctags"
+else
+    let g:tagbar_ctags_bin = "/usr/bin/ctags"
 endif
 
 if has('multi_byte')      " Make sure we have unicode support
@@ -22,7 +19,7 @@ if has('multi_byte')      " Make sure we have unicode support
 endif
 
 execute pathogen#infect()
-syntax enable
+syntax on
 filetype plugin indent on
 
 " --------------------------------------------
