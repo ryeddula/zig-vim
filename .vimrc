@@ -90,7 +90,7 @@ if &t_Co == 256
     " And some of them require this variable to be set:
     "let base16colorspace=256  " Access colors present in 256 colorspace
     set background=dark
-    colorscheme spacegray
+    colorscheme sexy-railscasts-256
 else
     colorscheme default
 endif
