@@ -63,3 +63,6 @@
 [submodule "bundle/vim-colors-atelier-schemes"]
 	path = bundle/vim-colors-atelier-schemes
 	url = https://github.com/atelierbram/vim-colors_atelier-schemes.git
+[submodule "bundle/vim-changesPlugin"]
+	path = bundle/vim-changesPlugin
+	url = https://github.com/chrisbra/changesPlugin.git
