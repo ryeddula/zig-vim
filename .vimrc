@@ -89,8 +89,8 @@ if &t_Co == 256
     " you to be running a base16-shell: https://github.com/chriskempson/base16-shell
     " And some of them require this variable to be set:
     "let base16colorspace=256  " Access colors present in 256 colorspace
+    colorscheme gruvbox
     set background=dark
-    colorscheme gotham256
 else
     colorscheme default
 endif
