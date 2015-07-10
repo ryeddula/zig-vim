@@ -36,6 +36,7 @@ nmap <leader>k :bprevious<CR>
 " Close the current buffer and move to the previous one. This replicates the idea of closing a tab
 nmap <leader>bq :bp <BAR> bd #<CR>
 
+set mouse=
 set incsearch              " Enable incremental searching
 set hlsearch               " Highlight search matches
 set ignorecase             " Ignore case when searching...
@@ -89,7 +90,7 @@ if &t_Co == 256
     " you to be running a base16-shell: https://github.com/chriskempson/base16-shell
     " And some of them require this variable to be set:
     "let base16colorspace=256  " Access colors present in 256 colorspace
-    colorscheme gruvbox
+    colorscheme PaperColor-Dark
     set background=dark
 else
     colorscheme default
@@ -192,7 +193,7 @@ highlight Folded ctermbg=darkblue ctermfg=yellow
 " --------------------------------------------
 
 " airline settings
-let g:airline_theme = 'murmur'
+let g:airline_theme = 'PaperColor'
 let g:airline_powerline_fonts = 1
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
