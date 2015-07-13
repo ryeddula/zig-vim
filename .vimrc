@@ -259,6 +259,10 @@ cabbrev q lcl\|q
 " TODO: figure why this doesn't get auto detected...
 autocmd BufNewFile,BufRead *.tt setf tt2html | :TagbarClose
 autocmd BufNewFile,BufRead *.tmpl,*.ptt set filetype=tt2html | :TagbarClose
+" cursorcolumn slows down vim too much in these files
+if (&ft == "javascript") || (&ft == "tt2html") || (&ft == "html")
+    set nocursorcolumn
+endif
 
 " UltiSnips
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "bundle/cpanel-snippets"]
