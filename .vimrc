@@ -171,6 +171,7 @@ function! s:DoTidy(visual) range
             let cmd = "/usr/local/cpanel/3rdparty/node/bin/js-beautify --config=~/.jsbeautifyrc --file -"
         endif
     endif
+    call changes#CleanUp()
     if a:visual == 0
         let text = ":%!" . cmd
         execute text
@@ -179,6 +180,10 @@ function! s:DoTidy(visual) range
         execute text
     end
     call winrestview(winview)
+    try
+    exe ":silent call changes#Init()"
+    exe ":silent call changes#EnableChanges(1, '!')"
+    endtry
 endfunction
 
 "" Folding
