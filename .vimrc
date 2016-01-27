@@ -7,14 +7,6 @@ endif
 
 if has('multi_byte')      " Make sure we have unicode support
    scriptencoding utf-8    " This file is in UTF-8
-
-   " ---- Terminal Setup ----
-   if (&termencoding == "" && (&term =~ "xterm" || &term =~ "putty")) || (&term =~ "rxvt-unicode") || (&term =~ "screen") || (&term =~ "toaru") || (&term =~ "nvim")
-      set termencoding=utf-8
-   endif
-   if ($COLORTERM =~ "putty")
-      set termencoding=latin
-   endif
    set encoding=utf-8      " Default encoding should always be UTF-8
 endif
 
@@ -111,8 +103,7 @@ nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <Space> zf
 
 " Show trailing whitespace visually
-" Shamelessly stolen from Ciaran McCreesh <ciaranm@gentoo.org>
-if (&termencoding == "utf-8") || has("gui_running")
+if has('multi_byte') || has("gui_running")
    if v:version >= 700
       set list listchars=tab:»·,trail:✗,extends:…,nbsp:‗
    else
