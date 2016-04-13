@@ -5,6 +5,10 @@ else
     let g:tagbar_ctags_bin = "/usr/bin/ctags"
 endif
 
+if executable('/opt/rh/python33/root/bin/python3.3')
+    let g:python3_host_prog = '/opt/rh/python33/root/bin/python3.3'
+endif
+
 if has('multi_byte')      " Make sure we have unicode support
    scriptencoding utf-8    " This file is in UTF-8
    set encoding=utf-8      " Default encoding should always be UTF-8
@@ -88,7 +92,9 @@ else
     colorscheme default
 endif
 
-" Perl Specific
+let g:deoplete#enable_at_startup = 1
+
+" Perl specific
 let perl_include_pod=1
 let perl_fold=1
 let perl_nofold_subs=1
@@ -96,11 +102,6 @@ let perl_want_scope_in_variables=1
 " syntax color complex things like @{${"foo"}}
 let perl_extended_vars=1
 
-" In normal mode, press Space to toggle the current fold open/closed.
-" However, if the cursor is not in a fold, move to the right (the default
-" behavior)
-nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
-vnoremap <Space> zf
 
 " Show trailing whitespace visually
 if has('multi_byte') || has("gui_running")
@@ -129,7 +130,7 @@ nmap <s-tab> ^i<bs><esc>
 
 " Turn on spellcheck when writing git commit messages, cause #spalleing
 if has("spell")
-    autocmd FileType gitcommit set spell spelllang=en_us
+    autocmd FileType gitcommit set spell spelllang=en
 endif
 
 " Locally (local to block) rename a variable
@@ -176,13 +177,6 @@ function! s:DoTidy(visual) range
     exe ":silent call changes#EnableChanges(1, '!')"
     endtry
 endfunction
-
-"" Folding
-set foldmethod=syntax
-set foldlevel=3
-set foldlevelstart=1
-set foldnestmax=2
-highlight Folded ctermbg=darkblue ctermfg=yellow
 
 " --------------------------------------------
 " Plugin settings.
@@ -260,13 +254,26 @@ if (&ft == "javascript") || (&ft == "tt2html") || (&ft == "html")
     set nocursorcolumn
 endif
 
+" Folding
+set foldlevel=3
+set foldlevelstart=1
+set foldnestmax=2
+highlight Folded ctermbg=darkblue ctermfg=yellow
+
+" In normal mode, press Space to toggle the current fold open/closed.
+" However, if the cursor is not in a fold, move to the right (the default
+" behavior)
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+vnoremap <Space> zf
+
 " UltiSnips
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "bundle/cpanel-snippets"]
 
 let g:ctrlp_cmd = 'CtrlP'
 nmap <leader>p :CtrlP<CR>
-let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_working_path_mode = 'rac'
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files']
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-  \ 'file': '\v\.(exe|so|dll)$',
+  \ 'file': '\v\.(exe|so|dll)$|(min|cmb|-.+).js$',
   \ }

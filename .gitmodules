@@ -75,3 +75,6 @@
 [submodule "bundle/vim-quick-scope"]
 	path = bundle/vim-quick-scope
 	url = https://github.com/unblevable/quick-scope.git
+[submodule "bundle/vim-deoplete"]
+	path = bundle/vim-deoplete
+	url = https://github.com/Shougo/deoplete.nvim.git
