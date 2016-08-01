@@ -45,9 +45,6 @@
 [submodule "bundle/vim-tomorrow-theme"]
 	path = bundle/vim-tomorrow-theme
 	url = https://github.com/chriskempson/vim-tomorrow-theme.git
-[submodule "bundle/vim-ultisnips"]
-	path = bundle/vim-ultisnips
-	url = https://github.com/SirVer/ultisnips.git
 [submodule "bundle/vim-snippets"]
 	path = bundle/vim-snippets
 	url = https://github.com/honza/vim-snippets
@@ -78,3 +75,12 @@
 [submodule "bundle/vim-deoplete"]
 	path = bundle/vim-deoplete
 	url = https://github.com/Shougo/deoplete.nvim.git
+[submodule "bundle/vim-tender"]
+	path = bundle/vim-tender
+	url = https://github.com/jacoborus/tender.vim.git
+[submodule "bundle/neomake"]
+	path = bundle/neomake
+	url = https://github.com/neomake/neomake.git
+[submodule "bundle/vim-ultisnips"]
+	path = bundle/vim-ultisnips
+	url = https://github.com/SirVer/ultisnips.git

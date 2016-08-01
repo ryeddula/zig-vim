@@ -42,7 +42,7 @@ set infercase              " Attempt to figure out the correct case<F37>
 set lazyredraw             " Lazy Redraw (faster macro execution)
 set wildmenu               " Menu on completion please
 set wildmode=longest,full  " Match the longest substring, complete with first
-set wildignore+=*.o,*~,*/tmp/*,*.so,*.swp,*.zip " Ignore temp files in wildmenu
+set wildignore+=*.o,*~,*/tmp/*,*.so,*.swp,*.zip,*.cmb.*js " Ignore temp files in wildmenu
 
 set noerrorbells           " Disable error bells
 set visualbell             " Turn visual bell on
@@ -70,7 +70,6 @@ set showmatch " show matching brackets
 set number " show line numbers
 
 set cursorline
-set cursorcolumn
 set scrolloff=10
 set sidescroll=1
 set sidescrolloff=15
@@ -86,6 +85,12 @@ if &t_Co == 256
     " you to be running a base16-shell: https://github.com/chriskempson/base16-shell
     " And some of them require this variable to be set:
     "let base16colorspace=256  " Access colors present in 256 colorspace
+    if has('nvim')
+        set termguicolors
+    else
+        set guicolors
+    endif
+
     set background=dark
     colorscheme PaperColor
 else
@@ -93,15 +98,6 @@ else
 endif
 
 let g:deoplete#enable_at_startup = 1
-
-" Perl specific
-let perl_include_pod=1
-let perl_fold=1
-let perl_nofold_subs=1
-let perl_want_scope_in_variables=1
-" syntax color complex things like @{${"foo"}}
-let perl_extended_vars=1
-
 
 " Show trailing whitespace visually
 if has('multi_byte') || has("gui_running")
@@ -208,39 +204,58 @@ let g:tagbar_sort = 0
 set notagbsearch
 autocmd FileType c,cpp,java,python,perl nested :TagbarOpen
 
+" Neomake settings
+autocmd! BufWritePost,BufEnter * Neomake
+let g:neomake_open_list = 2
+let g:neomake_perl_perlcritic_maker = {
+    \ 'args' : [ '--profile', '~/.perlcriticrc', '--stern', '--theme', 'legacy', '--quiet', '--nocolor', '--verbose', '\\%f:\\%l:\\%c:(\\%s) \\%m (\\%e)\\n'],
+    \ 'errorformat':
+    \ '%f:%l:%c:%m,',
+\}
+let g:neomake_perl_enabled_makers = ['perl', 'perlcritic']
+let g:neomake_warning_sign = {
+  \ 'text': '∆∆',
+  \ 'texthl': 'WarningMsg',
+  \ }
+let g:neomake_error_sign = {
+  \ 'text': '✗✗',
+  \ 'texthl': 'ErrorMsg',
+  \ }
+
 " Syntastic settings
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_enable_perl_checker = 1 " enable perl checks
-let g:syntastic_auto_loc_list = 1  " autoopen the errors window when the buffer has errors.
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+"let g:syntastic_enable_perl_checker = 1 " enable perl checks
+"let g:syntastic_auto_loc_list = 1  " autoopen the errors window when the buffer has errors.
+"let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
 " TODO: it appears that jshint shows stuff as warnings... so need to
 " conditionally suppress warnings only perl files for now.
-autocmd FileType perl let g:syntastic_quiet_messages = {'level': 'warnings'}
-autocmd FileType html let g:syntastic_html_tidy_ignore_errors = [ "<cptext> unexpected or duplicate quote mark", "discarding unexpected <cpanel>", "discarding unexpected <cptext>", "<cptext> is not recognized!",  "<cpanel> is not recognized!", "<cptext> attribute with missing trailing quote mark" ]
-let g:syntastic_enable_highlighting = 1
-let g:syntastic_auto_jump = 1
-let g:syntastic_loc_list_height = 5
-let g:syntastic_perl_checkers = ['perl', 'perlcritic']
-let g:syntastic_perl_lib_path = ['./lib']
-let g:syntastic_perl_perlcritic_args = '--profile ~/.perlcriticrc --stern --theme legacy'
-let g:syntastic_perl_perl_args = '-Mstrict'
+"autocmd FileType perl let g:syntastic_quiet_messages = {'level': 'warnings'}
+"autocmd FileType html let g:syntastic_html_tidy_ignore_errors = [ "<cptext> unexpected or duplicate quote mark", "discarding unexpected <cpanel>", "discarding unexpected <cptext>", "<cptext> is not recognized!",  "<cpanel> is not recognized!", "<cptext> attribute with missing trailing quote mark" ]
+"let g:syntastic_enable_highlighting = 1
+"let g:syntastic_auto_jump = 1
+"let g:syntastic_loc_list_height = 5
+"let g:syntastic_perl_checkers = ['perl', 'perlcritic']
+"let g:syntastic_perl_lib_path = ['./lib']
+"let g:syntastic_perl_perlcritic_args = '--profile ~/.perlcriticrc --stern --theme legacy'
+"let g:syntastic_perl_perl_args = '-Mstrict'
 " TODO: Should probably just add this to my path instead...
-if executable('/usr/local/cpanel/3rdparty/node/bin/jshint')
-    let g:syntastic_javascript_checkers = ['jshint']
-    let g:syntastic_javascript_jshint_exec = '/usr/local/cpanel/3rdparty/node/bin/jshint'
-    let g:syntastic_javascript_jshint_args = "--verbose --config ~/.jshintrc"
-endif
-if has("unix")
-    let g:syntastic_error_symbol = '✗✗'
-    let g:syntastic_style_error_symbol = '✠✠'
-    let g:syntastic_warning_symbol = '∆∆'
-    let g:syntastic_style_warning_symbol = '≈≈'
-else
-    let g:syntastic_error_symbol = 'X'
-    let g:syntastic_style_error_symbol = '>'
-    let g:syntastic_warning_symbol = '!'
-    let g:syntastic_style_warning_symbol = '>'
-endif
+"if executable('/usr/local/cpanel/3rdparty/node/bin/jshint')
+    "let g:syntastic_javascript_checkers = ['jshint']
+    "let g:syntastic_javascript_jshint_exec = '/usr/local/cpanel/3rdparty/node/bin/jshint'
+    "let g:syntastic_javascript_jshint_args = "--verbose --config ~/.jshintrc"
+"endif
+"if has("unix")
+    "let g:syntastic_error_symbol = '✗✗'
+    "let g:syntastic_style_error_symbol = '✠✠'
+    "let g:syntastic_warning_symbol = '∆∆'
+    "let g:syntastic_style_warning_symbol = '≈≈'
+"else
+    "let g:syntastic_error_symbol = 'X'
+    "let g:syntastic_style_error_symbol = '>'
+    "let g:syntastic_warning_symbol = '!'
+    "let g:syntastic_style_warning_symbol = '>'
+"endif
 " map the quit calls to also close the syntastic error windows, so it doesn't
 " hold us up unnecessarily
 cabbrev q lcl\|q
@@ -259,6 +274,15 @@ set foldlevel=3
 set foldlevelstart=1
 set foldnestmax=2
 highlight Folded ctermbg=darkblue ctermfg=yellow
+let perl_include_pod = 1
+let perl_fold = 1
+let perl_fold_packages = 1
+let perl_nofold_blocks = 1
+let perl_nofold_subs = 1
+let perl_nofold_anonymous_subs = 1
+let perl_want_scope_in_variables=1
+let perl_extended_vars=1
+autocmd Filetype perl setlocal foldlevel=1
 
 " In normal mode, press Space to toggle the current fold open/closed.
 " However, if the cursor is not in a fold, move to the right (the default
