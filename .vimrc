@@ -7,6 +7,8 @@ endif
 
 if executable('/opt/rh/python33/root/bin/python3.3')
     let g:python3_host_prog = '/opt/rh/python33/root/bin/python3.3'
+elseif executable('/opt/rh/python33/root/usr/bin/python')
+    let g:python3_host_prog = '/opt/rh/python33/root/usr/bin/python'
 endif
 
 if has('multi_byte')      " Make sure we have unicode support
@@ -204,58 +206,40 @@ let g:tagbar_sort = 0
 set notagbsearch
 autocmd FileType c,cpp,java,python,perl nested :TagbarOpen
 
-" Neomake settings
-autocmd! BufWritePost,BufEnter * Neomake
-let g:neomake_open_list = 2
-let g:neomake_perl_perlcritic_maker = {
-    \ 'args' : [ '--profile', '~/.perlcriticrc', '--stern', '--theme', 'legacy', '--quiet', '--nocolor', '--verbose', '\\%f:\\%l:\\%c:(\\%s) \\%m (\\%e)\\n'],
-    \ 'errorformat':
-    \ '%f:%l:%c:%m,',
-\}
-let g:neomake_perl_enabled_makers = ['perl', 'perlcritic']
-let g:neomake_warning_sign = {
-  \ 'text': '∆∆',
-  \ 'texthl': 'WarningMsg',
-  \ }
-let g:neomake_error_sign = {
-  \ 'text': '✗✗',
-  \ 'texthl': 'ErrorMsg',
-  \ }
-
 " Syntastic settings
-"let g:syntastic_check_on_open = 1
-"let g:syntastic_check_on_wq = 0
-"let g:syntastic_enable_perl_checker = 1 " enable perl checks
-"let g:syntastic_auto_loc_list = 1  " autoopen the errors window when the buffer has errors.
-"let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_enable_perl_checker = 1 " enable perl checks
+let g:syntastic_auto_loc_list = 1  " autoopen the errors window when the buffer has errors.
+let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
 " TODO: it appears that jshint shows stuff as warnings... so need to
 " conditionally suppress warnings only perl files for now.
-"autocmd FileType perl let g:syntastic_quiet_messages = {'level': 'warnings'}
-"autocmd FileType html let g:syntastic_html_tidy_ignore_errors = [ "<cptext> unexpected or duplicate quote mark", "discarding unexpected <cpanel>", "discarding unexpected <cptext>", "<cptext> is not recognized!",  "<cpanel> is not recognized!", "<cptext> attribute with missing trailing quote mark" ]
-"let g:syntastic_enable_highlighting = 1
-"let g:syntastic_auto_jump = 1
-"let g:syntastic_loc_list_height = 5
-"let g:syntastic_perl_checkers = ['perl', 'perlcritic']
-"let g:syntastic_perl_lib_path = ['./lib']
-"let g:syntastic_perl_perlcritic_args = '--profile ~/.perlcriticrc --stern --theme legacy'
-"let g:syntastic_perl_perl_args = '-Mstrict'
+autocmd FileType perl let g:syntastic_quiet_messages = {'level': 'warnings'}
+autocmd FileType html let g:syntastic_html_tidy_ignore_errors = [ "<cptext> unexpected or duplicate quote mark", "discarding unexpected <cpanel>", "discarding unexpected <cptext>", "<cptext> is not recognized!",  "<cpanel> is not recognized!", "<cptext> attribute with missing trailing quote mark" ]
+let g:syntastic_enable_highlighting = 1
+let g:syntastic_auto_jump = 1
+let g:syntastic_loc_list_height = 5
+let g:syntastic_perl_checkers = ['perl', 'perlcritic']
+let g:syntastic_perl_lib_path = ['./lib']
+let g:syntastic_perl_perlcritic_args = '--profile ~/.perlcriticrc --stern --theme legacy'
+let g:syntastic_perl_perl_args = '-Mstrict'
 " TODO: Should probably just add this to my path instead...
-"if executable('/usr/local/cpanel/3rdparty/node/bin/jshint')
-    "let g:syntastic_javascript_checkers = ['jshint']
-    "let g:syntastic_javascript_jshint_exec = '/usr/local/cpanel/3rdparty/node/bin/jshint'
-    "let g:syntastic_javascript_jshint_args = "--verbose --config ~/.jshintrc"
-"endif
-"if has("unix")
-    "let g:syntastic_error_symbol = '✗✗'
-    "let g:syntastic_style_error_symbol = '✠✠'
-    "let g:syntastic_warning_symbol = '∆∆'
-    "let g:syntastic_style_warning_symbol = '≈≈'
-"else
-    "let g:syntastic_error_symbol = 'X'
-    "let g:syntastic_style_error_symbol = '>'
-    "let g:syntastic_warning_symbol = '!'
-    "let g:syntastic_style_warning_symbol = '>'
-"endif
+if executable('/usr/local/cpanel/3rdparty/node/bin/jshint')
+    let g:syntastic_javascript_checkers = ['jshint']
+    let g:syntastic_javascript_jshint_exec = '/usr/local/cpanel/3rdparty/node/bin/jshint'
+    let g:syntastic_javascript_jshint_args = "--verbose --config ~/.jshintrc"
+endif
+if has("unix")
+    let g:syntastic_error_symbol = '✗✗'
+    let g:syntastic_style_error_symbol = '✠✠'
+    let g:syntastic_warning_symbol = '∆∆'
+    let g:syntastic_style_warning_symbol = '≈≈'
+else
+    let g:syntastic_error_symbol = 'X'
+    let g:syntastic_style_error_symbol = '>'
+    let g:syntastic_warning_symbol = '!'
+    let g:syntastic_style_warning_symbol = '>'
+endif
 " map the quit calls to also close the syntastic error windows, so it doesn't
 " hold us up unnecessarily
 cabbrev q lcl\|q
