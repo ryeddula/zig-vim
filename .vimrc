@@ -211,13 +211,14 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_enable_perl_checker = 1 " enable perl checks
 let g:syntastic_auto_loc_list = 1  " autoopen the errors window when the buffer has errors.
+let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
 " TODO: it appears that jshint shows stuff as warnings... so need to
 " conditionally suppress warnings only perl files for now.
 autocmd FileType perl let g:syntastic_quiet_messages = {'level': 'warnings'}
 autocmd FileType html let g:syntastic_html_tidy_ignore_errors = [ "<cptext> unexpected or duplicate quote mark", "discarding unexpected <cpanel>", "discarding unexpected <cptext>", "<cptext> is not recognized!",  "<cpanel> is not recognized!", "<cptext> attribute with missing trailing quote mark" ]
 let g:syntastic_enable_highlighting = 1
-let g:syntastic_auto_jump = 1
+let g:syntastic_auto_jump = 0 " dont automatically jump to the first error
 let g:syntastic_loc_list_height = 5
 let g:syntastic_perl_checkers = ['perl', 'perlcritic']
 let g:syntastic_perl_lib_path = ['./lib']
@@ -266,7 +267,6 @@ let perl_nofold_subs = 1
 let perl_nofold_anonymous_subs = 1
 let perl_want_scope_in_variables=1
 let perl_extended_vars=1
-autocmd Filetype perl setlocal foldlevel=1
 
 " In normal mode, press Space to toggle the current fold open/closed.
 " However, if the cursor is not in a fold, move to the right (the default
