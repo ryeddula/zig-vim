@@ -36,6 +36,10 @@ nmap <leader>bq :bp <BAR> bd #<CR>
 
 set mouse=
 set incsearch              " Enable incremental searching
+" Neovim feature for 'live' substitution
+if exists('&inccommand')
+  set inccommand=split
+endif
 set hlsearch               " Highlight search matches
 set ignorecase             " Ignore case when searching...
 set smartcase              " ...except when we don't want it
