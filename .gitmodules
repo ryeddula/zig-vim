@@ -56,9 +56,6 @@
 [submodule "bundle/vim-colors-atelier-schemes"]
 	path = bundle/vim-colors-atelier-schemes
 	url = https://github.com/atelierbram/vim-colors_atelier-schemes.git
-[submodule "bundle/vim-changesPlugin"]
-	path = bundle/vim-changesPlugin
-	url = https://github.com/chrisbra/changesPlugin.git
 [submodule "bundle/papercolor-theme"]
 	path = bundle/papercolor-theme
 	url = https://github.com/NLKNguyen/papercolor-theme
@@ -80,3 +77,9 @@
 [submodule "bundle/ale"]
 	path = bundle/ale
 	url = https://github.com/w0rp/ale.git
+[submodule "bundle/vim-airline-themes"]
+	path = bundle/vim-airline-themes
+	url = https://github.com/vim-airline/vim-airline-themes.git
+[submodule "bundle/vim-signify"]
+	path = bundle/vim-signify
+	url = https://github.com/mhinz/vim-signify.git

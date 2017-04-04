@@ -14,6 +14,7 @@ endif
 if has('multi_byte')      " Make sure we have unicode support
    scriptencoding utf-8    " This file is in UTF-8
    set encoding=utf-8      " Default encoding should always be UTF-8
+   set encoding=utf8
 endif
 
 execute pathogen#infect()
@@ -148,6 +149,8 @@ nmap gr "zyiw:call Refactor()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z/g<cr
 " --------------------------------------------
 vnoremap <silent> _t :call <SID>DoTidy(1)<CR>
 nnoremap <silent> _t :call <SID>DoTidy(0)<CR>
+vnoremap <silent> _T :call <SID>NonPrintable()<CR>
+nnoremap <silent> _T :call <SID>NonPrintable()<CR>
 
 function! s:DoTidy(visual) range
     let cmd = "cat"
@@ -163,7 +166,6 @@ function! s:DoTidy(visual) range
             let cmd = "/usr/local/cpanel/3rdparty/node/bin/js-beautify --config=~/.jsbeautifyrc --file -"
         endif
     endif
-    call changes#CleanUp()
     if a:visual == 0
         let text = ":%!" . cmd
         execute text
@@ -172,18 +174,25 @@ function! s:DoTidy(visual) range
         execute text
     end
     call winrestview(winview)
-    try
-    exe ":silent call changes#Init()"
-    exe ":silent call changes#EnableChanges(1, '!')"
-    endtry
 endfunction
+
+function! NonPrintable()
+   setlocal enc=utf8
+   if search('[^\x00-\xff]') != 0
+     call matchadd('Error', '[^\x00-\xff]')
+     echo 'Non printable characters in text'
+   else
+     setlocal enc=latin1
+     echo 'All characters are printable'
+   endif
+ endfunction
 
 " --------------------------------------------
 " Plugin settings.
 " --------------------------------------------
 
 " airline settings
-let g:airline_theme = 'PaperColor'
+let g:airline_theme = 'papercolor'
 let g:airline_powerline_fonts = 1
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
@@ -208,6 +217,11 @@ let g:tagbar_sort = 0
 set notagbsearch
 autocmd FileType c,cpp,java,python,perl nested :TagbarOpen
 
+" Signify
+let g:signify_vcs_list = [ 'git' ]
+let g:signify_realtime = 1
+
+
 " Syntastic settings
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
@@ -226,12 +240,17 @@ let g:syntastic_perl_checkers = ['perl', 'perlcritic']
 let g:syntastic_perl_lib_path = ['./lib']
 let g:syntastic_perl_perlcritic_args = '--profile ~/.perlcriticrc --stern --theme legacy'
 let g:syntastic_perl_perl_args = '-Mstrict'
+
 " TODO: Should probably just add this to my path instead...
 if executable('/usr/local/cpanel/3rdparty/node/bin/jshint')
     let g:syntastic_javascript_checkers = ['jshint']
     let g:syntastic_javascript_jshint_exec = '/usr/local/cpanel/3rdparty/node/bin/jshint'
     let g:syntastic_javascript_jshint_args = "--verbose --config ~/.jshintrc"
+    let g:ale_javascript_jshint_executable = '/usr/local/cpanel/3rdparty/node/bin/jshint'
+    let g:ale_javascript_jshint_use_global = 1
+    let g:ale_jshint_config_loc = "~/.jshintrc"
 endif
+
 if has("unix")
     let g:syntastic_error_symbol = '✗✗'
     let g:syntastic_style_error_symbol = '✠✠'
