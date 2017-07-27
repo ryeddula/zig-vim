@@ -27,13 +27,17 @@ filetype plugin indent on
 
 let mapleader="," " Set leader to ',' instead of '\'
 "To open a new empty buffer
-nmap <leader>t :enew<CR>
+nmap <leader>t :lcl<BAR> :enew<CR>
 " Move to the next buffer
-nmap <leader>l :bnext<CR>
+nmap <leader>l :lcl<BAR> :bnext<CR>
 " Move to the previous buffer
-nmap <leader>k :bprevious<CR>
+nmap <leader>k :lcl<BAR> :bprevious<CR>
 " Close the current buffer and move to the previous one. This replicates the idea of closing a tab
-nmap <leader>bq :bp <BAR> bd #<CR>
+nmap <leader>bq :lcl<BAR> :bp <BAR> bd #<CR>
+
+" map the quit calls to also close the syntastic error windows, so it doesn't
+" hold us up unnecessarily
+cabbrev q lcl\|q
 
 set mouse=
 set incsearch              " Enable incremental searching
@@ -98,6 +102,9 @@ if &t_Co == 256
 
     set background=dark
     colorscheme PaperColor
+    " since PaperColor doesn't set this automatically - set it so
+    " that the vim-signify gutter is nice
+    highlight SignColumn guibg=#1c1c1c
 else
     colorscheme default
 endif
@@ -176,7 +183,7 @@ function! s:DoTidy(visual) range
     call winrestview(winview)
 endfunction
 
-function! NonPrintable()
+function! s:NonPrintable()
    setlocal enc=utf8
    if search('[^\x00-\xff]') != 0
      call matchadd('Error', '[^\x00-\xff]')
@@ -221,50 +228,17 @@ autocmd FileType c,cpp,java,python,perl nested :TagbarOpen
 let g:signify_vcs_list = [ 'git' ]
 let g:signify_realtime = 1
 
+" Ale settings
+let g:ale_set_loclist = 1
+let g:ale_set_quickfix = 0
+let g:ale_open_list = 1
+let g:ale_perl_perl_options = '-X -c -Mwarnings -Ilib -I/usr/local/cpanel -I/usr/local/cpanel/t/lib'
 
-" Syntastic settings
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_enable_perl_checker = 1 " enable perl checks
-let g:syntastic_auto_loc_list = 1  " autoopen the errors window when the buffer has errors.
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
-" TODO: it appears that jshint shows stuff as warnings... so need to
-" conditionally suppress warnings only perl files for now.
-autocmd FileType perl let g:syntastic_quiet_messages = {'level': 'warnings'}
-autocmd FileType html let g:syntastic_html_tidy_ignore_errors = [ "<cptext> unexpected or duplicate quote mark", "discarding unexpected <cpanel>", "discarding unexpected <cptext>", "<cptext> is not recognized!",  "<cpanel> is not recognized!", "<cptext> attribute with missing trailing quote mark" ]
-let g:syntastic_enable_highlighting = 1
-let g:syntastic_auto_jump = 0 " dont automatically jump to the first error
-let g:syntastic_loc_list_height = 5
-let g:syntastic_perl_checkers = ['perl', 'perlcritic']
-let g:syntastic_perl_lib_path = ['./lib']
-let g:syntastic_perl_perlcritic_args = '--profile ~/.perlcriticrc --stern --theme legacy'
-let g:syntastic_perl_perl_args = '-Mstrict'
-
-" TODO: Should probably just add this to my path instead...
-if executable('/usr/local/cpanel/3rdparty/node/bin/jshint')
-    let g:syntastic_javascript_checkers = ['jshint']
-    let g:syntastic_javascript_jshint_exec = '/usr/local/cpanel/3rdparty/node/bin/jshint'
-    let g:syntastic_javascript_jshint_args = "--verbose --config ~/.jshintrc"
-    let g:ale_javascript_jshint_executable = '/usr/local/cpanel/3rdparty/node/bin/jshint'
-    let g:ale_javascript_jshint_use_global = 1
-    let g:ale_jshint_config_loc = "~/.jshintrc"
+if executable('/usr/local/cpanel/3rdparty/node/bin/eslint')
+    let g:ale_javascript_eslint_executable = '/usr/local/cpanel/3rdparty/node/bin/eslint'
+    let g:ale_javascript_eslint_options = '--config /usr/local/cpanel/build-tools/eslint/eslintrc.json'
+    let g:ale_javascript_eslint_use_global = 1
 endif
-
-if has("unix")
-    let g:syntastic_error_symbol = '✗✗'
-    let g:syntastic_style_error_symbol = '✠✠'
-    let g:syntastic_warning_symbol = '∆∆'
-    let g:syntastic_style_warning_symbol = '≈≈'
-else
-    let g:syntastic_error_symbol = 'X'
-    let g:syntastic_style_error_symbol = '>'
-    let g:syntastic_warning_symbol = '!'
-    let g:syntastic_style_warning_symbol = '>'
-endif
-" map the quit calls to also close the syntastic error windows, so it doesn't
-" hold us up unnecessarily
-cabbrev q lcl\|q
 
 " Associate *.tt files with template toolkit
 " TODO: figure why this doesn't get auto detected...
