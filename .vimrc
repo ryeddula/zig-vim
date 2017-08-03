@@ -162,23 +162,56 @@ nnoremap <silent> _T :call <SID>NonPrintable()<CR>
 function! s:DoTidy(visual) range
     let cmd = "cat"
     let winview = winsaveview()
+    let ran_eslint = 0
+
     if &ft == "perl"
         let cmd = "perltidy -q"
     elseif &ft == "python"
         let cmd = "pythontidy"
     elseif &ft == "javascript"
-        if executable('/usr/local/cpanel/3rdparty/node/bin/jsfmt')
-            let cmd = "/usr/local/cpanel/3rdparty/node/bin/jsfmt"
-        else
-            let cmd = "/usr/local/cpanel/3rdparty/node/bin/js-beautify --config=~/.jsbeautifyrc --file -"
+        if executable('/usr/local/cpanel/3rdparty/node/bin/eslint') && filereadable('/usr/local/cpanel/build-tools/eslint/eslint_style_rules.json')
+            let ran_eslint = 1
+            let eslint_binary = '/usr/local/cpanel/3rdparty/node/bin/eslint'
+            let eslint_config = '/usr/local/cpanel/build-tools/eslint/eslint_style_rules.json'
+
+            " Temp file idea lifted from:
+            " https://github.com/Chiel92/vim-autoformat/blob/master/plugin/defaults.vim
+            "
+            " We have to use a temporary file atm, as ESLint does not
+            " allow PIPEs with the --fix option
+            let eslint_js_tmp_file = fnameescape(tempname().".js")
+            let content = getline('1', '$')
+            call writefile(content, l:eslint_js_tmp_file)
+
+            call system(eslint_binary." --config ".eslint_config." --fix ".eslint_js_tmp_file." 1> /dev/null;")
+
+            let tidy = readfile(eslint_js_tmp_file)
+            let start = 1
+            let end = line("$") > len(tidy) ? line("$") : len(tidy)
+            " NOTE: visual mode does not handle cases where new lines are added fully!
+            " You should review the tidied variant fully to make sure
+            " lines no removed
+            if a:visual == 1
+                let start = line("'<")
+                let end = line("'>")
+            endif
+
+            for lin_num in range(start, end)
+                call setline(lin_num, tidy[lin_num - 1])
+            endfor
+
+            call system("rm -f ".eslint_js_tmp_file)
         endif
     endif
-    if a:visual == 0
-        let text = ":%!" . cmd
-        execute text
-    elseif a:visual == 1
-        let text = ":'<,'>!" . cmd
-        execute text
+
+    if ran_eslint == 0
+        if a:visual == 0
+            let text = ":%!" . cmd
+            execute text
+        elseif a:visual == 1
+            let text = ":'<,'>!" . cmd
+            execute text
+        end
     end
     call winrestview(winview)
 endfunction
@@ -231,7 +264,6 @@ let g:signify_realtime = 1
 " Ale settings
 let g:ale_set_loclist = 1
 let g:ale_set_quickfix = 0
-let g:ale_open_list = 1
 let g:ale_perl_perl_options = '-X -c -Mwarnings -Ilib -I/usr/local/cpanel -I/usr/local/cpanel/t/lib'
 
 if executable('/usr/local/cpanel/3rdparty/node/bin/eslint')
