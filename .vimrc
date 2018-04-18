@@ -5,7 +5,9 @@ else
     let g:tagbar_ctags_bin = "/usr/bin/ctags"
 endif
 
-if executable('/opt/rh/python33/root/bin/python3.3')
+if executable('/opt/rh/rh-python36/root/usr/bin/python')
+    let g:python3_host_prog = '/opt/rh/rh-python36/root/usr/bin/python'
+elseif executable('/opt/rh/python33/root/bin/python3.3')
     let g:python3_host_prog = '/opt/rh/python33/root/bin/python3.3'
 elseif executable('/opt/rh/python33/root/usr/bin/python')
     let g:python3_host_prog = '/opt/rh/python33/root/usr/bin/python'
@@ -167,7 +169,11 @@ function! s:DoTidy(visual) range
     if &ft == "perl"
         let cmd = "perltidy -q"
     elseif &ft == "python"
-        let cmd = "pythontidy"
+        if executable('/usr/local/cpanel/3rdparty/bin/pythontidy')
+            let cmd = "/usr/local/cpanel/3rdparty/bin/pythontidy"
+        else
+            let cmd = "pythontidy"
+        endif
     elseif &ft == "javascript"
         if executable('/usr/local/cpanel/3rdparty/node/bin/eslint') && filereadable('/usr/local/cpanel/build-tools/eslint/eslint_style_rules.json')
             let ran_eslint = 1
@@ -271,6 +277,12 @@ if executable('/usr/local/cpanel/3rdparty/node/bin/eslint')
     let g:ale_javascript_eslint_options = '--config /usr/local/cpanel/build-tools/eslint/eslintrc.json'
     let g:ale_javascript_eslint_use_global = 1
 endif
+
+" Do not lint or fix minified files.
+let g:ale_pattern_options = {
+\ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
+\ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []},
+\}
 
 " Associate *.tt files with template toolkit
 " TODO: figure why this doesn't get auto detected...
