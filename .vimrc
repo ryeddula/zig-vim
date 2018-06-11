@@ -278,6 +278,14 @@ if executable('/usr/local/cpanel/3rdparty/node/bin/eslint')
     let g:ale_javascript_eslint_use_global = 1
 endif
 
+" Enable some linter that are disabled by default:
+" rpmlint for rpm specfiles
+" perl -c for perl
+let g:ale_linters = {
+\    'spec': ['rpmlint'],
+\    'perl': ['perl', 'perlcritic'],
+\}
+
 " Do not lint or fix minified files.
 let g:ale_pattern_options = {
 \ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
