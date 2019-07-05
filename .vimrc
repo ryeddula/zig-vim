@@ -1,5 +1,5 @@
 " Set ctags path
-if has("mac")
+if has("mac") || executable('/usr/local/bin/ctags')
     let g:tagbar_ctags_bin = "/usr/local/bin/ctags"
 else
     let g:tagbar_ctags_bin = "/usr/bin/ctags"
@@ -270,7 +270,7 @@ let g:signify_realtime = 1
 " Ale settings
 let g:ale_set_loclist = 1
 let g:ale_set_quickfix = 0
-let g:ale_perl_perl_options = '-X -c -Mwarnings -Ilib -I/usr/local/cpanel -I/usr/local/cpanel/t/lib'
+let g:ale_perl_perl_options = '-X -c -Mwarnings -I. -ISOURCES -Ilib -I/usr/local/cpanel -I/usr/local/cpanel/t/lib -I/usr/local/cpanel/t/qa/lib/'
 
 if executable('/usr/local/cpanel/3rdparty/node/bin/eslint')
     let g:ale_javascript_eslint_executable = '/usr/local/cpanel/3rdparty/node/bin/eslint'
