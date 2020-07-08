@@ -70,6 +70,7 @@ set noswapfile
 " start with nohightlights
 nohl
 
+" Default to 'normal' settings for work
 set tabstop=4              " 4 spaces for tabs
 set shiftwidth=4           " 4 spaces for indents
 set smarttab               " Tab next line based on current line
@@ -78,6 +79,24 @@ set autoindent             " Automatically indent next line
 if has('smartindent')
    set smartindent            " Indent next line based on current line
 endif
+
+" Golang settings
+au FileType go set noexpandtab
+au FileType go set shiftwidth=4
+au FileType go set softtabstop=4
+au FileType go set tabstop=4
+
+" Golang (vim-go) highlight settings
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_types = 1
+" enable highlighting of variables that are the same
+let g:go_auto_sameids = 1
 
 set showmatch " show matching brackets
 set number " show line numbers
@@ -90,6 +109,9 @@ set sidescrolloff=15
 " better wrapping
 set wrap linebreak
 set showbreak=" "
+
+" Close netrw buffer after opening file
+let g:netrw_fastbrowse = 0
 
 if &t_Co == 256
     set t_ut= "disable background color erase to avoid bleeding in screen
@@ -302,9 +324,9 @@ if (&ft == "javascript") || (&ft == "tt2html") || (&ft == "html")
 endif
 
 " Folding
-set foldlevel=3
-set foldlevelstart=1
-set foldnestmax=2
+set foldlevel=1
+"set foldlevelstart=2
+"set foldnestmax=2
 highlight Folded ctermbg=darkblue ctermfg=yellow
 let perl_include_pod = 1
 let perl_fold = 1
